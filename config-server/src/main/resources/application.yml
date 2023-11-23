@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/AndZPW/task-tracker-config
+          username: AndZWP
+          password: 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 #s6inwc5hv59v5x9
+          clone-on-start: true
+      fail-fast: true
+      profile: git

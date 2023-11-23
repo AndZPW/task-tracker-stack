@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: email-sender
+
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+
+  mail:
+    protocol:
+    host:
+    port:
+    username:
+    password:

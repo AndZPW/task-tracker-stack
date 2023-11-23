@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
-@Service("default-impl")
+@Service
 class EmailServiceImpl(private val emailSender: JavaMailSender) : EmailService {
 
     private val logger: Log = LogFactory.getLog(this.javaClass)

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: task-service
+
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        service-id: config-server
+        enabled: true
+

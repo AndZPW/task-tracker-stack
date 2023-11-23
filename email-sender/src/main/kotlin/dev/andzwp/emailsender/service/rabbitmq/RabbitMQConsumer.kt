@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
 @Service
-class RabbitMQConsumer(@Qualifier("default-impl") private val emailService: EmailService) {
+class RabbitMQConsumer( private val emailService: EmailService) {
 
     @RabbitListener(queues = ["\${rabbitmq.queue.name}"])
     fun consumeEmail(email: Email) {
