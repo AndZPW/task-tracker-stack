@@ -1,15 +1,13 @@
-package dev.andzwp.taskservice;
+package dev.andzwp.apigetaway;
 
-import dev.andzwp.taskservice.dto.Status;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TaskServiceApplicationTests {
+class ApiGetawayApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(Status.ACTIVE);
     }
 
 }
