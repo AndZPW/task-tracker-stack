@@ -1,8 +1,6 @@
 package dev.andzwp.taskservice.config;
 
-import com.rabbitmq.client.AMQP;
-import org.springframework.amqp.core.Exchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +11,30 @@ public class RabbitMQConfiguration {
     @Value("${rabbitmq.queue.name}")
     private String queueName;
 
+    @Value("${rabbitmq.exchange.name}")
+    private String topicExchangeName;
+
+    @Value("${rabbitmq.routing.key}")
+    private String routingKey;
+
     @Bean
-    public Queue queue(){
-        return new Queue(queueName,true);
+    public Queue queue() {
+        return new Queue(queueName, true);
     }
 
+    @Bean
+    public Exchange exchange() {
+        return new TopicExchange(topicExchangeName);
+    }
+
+
+    @Bean
+    public Binding binding() {
+        return BindingBuilder
+                .bind(queue())
+                .to(exchange())
+                .with(routingKey)
+                .noargs();
+    }
 
 }
