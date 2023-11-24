@@ -1,13 +1,13 @@
 package dev.andzwp.taskservice.mapper;
 
 
-import dev.andzwp.taskservice.dto.TaskDTO;
+import dev.andzwp.taskservice.dto.TaskRequest;
 import dev.andzwp.taskservice.model.Task;
 
-public interface TaskMapper {
+public interface TaskMapper<T> {
 
-    TaskDTO mapEntityToDTO(Task task);
+    T mapEntityToDTO(Task task);
 
-    Task mapDTOtoEntity(TaskDTO dto);
+    Task mapDTOtoEntity(T dto);
 
 }

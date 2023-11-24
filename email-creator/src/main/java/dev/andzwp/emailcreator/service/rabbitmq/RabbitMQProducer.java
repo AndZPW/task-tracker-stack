@@ -11,12 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RabbitProducer {
+public class RabbitMQProducer {
 
     private final RabbitTemplate rabbitTemplate;
-
-    @Value("${rabbit.producer.queue}")
-    private String queueName;
 
     @Value("${rabbit.producer.topic}")
     private String topicExchangeName;
@@ -27,7 +24,7 @@ public class RabbitProducer {
     public void sendMessage(Email email) {
         try {
             rabbitTemplate.convertAndSend(topicExchangeName, routingKey, email);
-            log.info("");
+            log.info("Email sent to the email sender");
         } catch (RuntimeException e) {
             log.error("The exception with following message {}", e.getMessage());
         }
