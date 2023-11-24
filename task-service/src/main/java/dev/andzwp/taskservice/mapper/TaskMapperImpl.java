@@ -2,15 +2,15 @@ package dev.andzwp.taskservice.mapper;
 
 import dev.andzwp.taskservice.dto.TaskDTO;
 import dev.andzwp.taskservice.model.Task;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TaskMapperImpl implements TaskMapper {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public TaskDTO mapEntityToDTO(Task task) {
