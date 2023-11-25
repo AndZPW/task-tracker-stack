@@ -1,7 +1,9 @@
 package dev.andzwp.taskservice.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
-public record TaskRequest(String header, String content, Long userId) {
+public record TaskRequest(@NotBlank String header, String content, @Min(1) Long userId) {
 }

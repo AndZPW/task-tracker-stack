@@ -55,5 +55,28 @@ public class TaskServiceImpl implements TaskService {
         return tasksWithUserId;
     }
 
+    @Override
+    public void deleteTaskById(Long id) throws NoSuchTaskException {
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchTaskException("No task present with the following id=" + id));
+        taskRepository.delete(task);
+        log.info("Task with id={} successfully deleted", id);
+    }
+
+    @Override
+    public void deleteAllTasksByUserId(Long userId) {
+        var tasks = taskRepository.findAllByUserId(userId);
+        taskRepository.deleteAll(tasks);
+        log.info("All tasks with userId={} successfully deleted", userId);
+    }
+
+    @Override
+    public Long createTask(TaskRequest taskRequest) {
+        var task = taskRequestMapper.mapDTOtoEntity(taskRequest);
+        var id = taskRepository.save(task).getId();
+        log.info("Task with id={} successfully created", id);
+        return id;
+    }
+
 
 }
