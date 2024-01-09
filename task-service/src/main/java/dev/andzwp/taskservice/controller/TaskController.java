@@ -18,8 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -49,6 +49,13 @@ public class TaskController {
         return taskService.fetchTaskById(id);
     }
 
+    @Operation(summary = "Get all tasks")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found tasks",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = List.class))}),
+
+    })
     @ResponseStatus(HttpStatus.OK)
     @ValidRequestParam(min = 1)
     @GetMapping(params = {"userId"})
@@ -58,6 +65,19 @@ public class TaskController {
     }
 
 
+    @Operation(summary = "Delete task by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Delete the task",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Void.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Task not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))})
+
+    })
     @DeleteMapping("/{id}")
     @ValidRequestParam(min = 1)
     public ResponseEntity<?> deleteEntityById(@PathVariable("id") Long id) throws NoSuchTaskException {
@@ -65,7 +85,19 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "Delete all tasks associated with userId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Delete all tasks",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Void.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid userId supplied",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Task not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))})
 
+    })
     @ValidRequestParam(min = 1)
     @DeleteMapping(params = {"userId"})
     public ResponseEntity<?> deleteAllTasksByUserId(@RequestParam("id") Long userId) {
@@ -73,6 +105,18 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
+    @Operation(summary = "Create the task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Create the task",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Response.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid request supplied",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
+
+
+    })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Response createTask(@Validated TaskRequest taskRequest) {
