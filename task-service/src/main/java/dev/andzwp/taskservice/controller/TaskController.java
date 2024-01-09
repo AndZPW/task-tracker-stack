@@ -1,6 +1,7 @@
 package dev.andzwp.taskservice.controller;
 
 import dev.andzwp.taskservice.aop.ValidRequestParam;
+import dev.andzwp.taskservice.dto.ErrorResponse;
 import dev.andzwp.taskservice.dto.Response;
 import dev.andzwp.taskservice.dto.TaskRequest;
 import dev.andzwp.taskservice.dto.TaskResponse;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,20 +29,22 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @ResponseStatus(HttpStatus.OK)
-    @ValidRequestParam(min = 1)
-    @GetMapping("/{id}")
     @Operation(summary = "Get task by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the task",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = TaskResponse.class))}),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",
-                    content = @Content),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
             @ApiResponse(responseCode = "404", description = "Task not found",
-                    content = @Content)
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))})
 
     })
+    @ValidRequestParam(min = 1)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
     public TaskResponse fetchTaskById(@PathVariable("id") Long id) throws NoSuchTaskException {
         return taskService.fetchTaskById(id);
     }
@@ -53,20 +57,20 @@ public class TaskController {
         else return taskService.fetchAllByUserId(id);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+
     @DeleteMapping("/{id}")
     @ValidRequestParam(min = 1)
-    public Response deleteEntityById(@PathVariable("id") Long id) throws NoSuchTaskException {
+    public ResponseEntity<?> deleteEntityById(@PathVariable("id") Long id) throws NoSuchTaskException {
         taskService.deleteTaskById(id);
-        return new Response(HttpStatus.NO_CONTENT, "Task with id=" + id + " successfully deleted");
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+
     @ValidRequestParam(min = 1)
     @DeleteMapping(params = {"userId"})
-    public Response deleteAllTasksByUserId(@RequestParam("id") Long userId) {
+    public ResponseEntity<?> deleteAllTasksByUserId(@RequestParam("id") Long userId) {
         taskService.deleteAllTasksByUserId(userId);
-        return new Response(HttpStatus.NO_CONTENT, "Tasks with userId=" + userId + " successfully deleted");
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
