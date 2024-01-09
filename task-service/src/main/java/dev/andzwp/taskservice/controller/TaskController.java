@@ -6,6 +6,12 @@ import dev.andzwp.taskservice.dto.TaskRequest;
 import dev.andzwp.taskservice.dto.TaskResponse;
 import dev.andzwp.taskservice.exception.NoSuchTaskException;
 import dev.andzwp.taskservice.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tasks")
+@Tag(name = "Tasks", description = "Methods for task management")
 public class TaskController {
 
     private final TaskService taskService;
@@ -23,6 +30,17 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     @ValidRequestParam(min = 1)
     @GetMapping("/{id}")
+    @Operation(summary = "Get task by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the task",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Task not found",
+                    content = @Content)
+
+    })
     public TaskResponse fetchTaskById(@PathVariable("id") Long id) throws NoSuchTaskException {
         return taskService.fetchTaskById(id);
     }
@@ -53,8 +71,8 @@ public class TaskController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Response createTask(@Validated TaskRequest taskRequest){
+    public Response createTask(@Validated TaskRequest taskRequest) {
         taskService.createTask(taskRequest);
-        return new Response(HttpStatus.CREATED,"Task successfully created");
+        return new Response(HttpStatus.CREATED, "Task successfully created");
     }
 }

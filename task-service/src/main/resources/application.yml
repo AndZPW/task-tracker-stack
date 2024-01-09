@@ -1,1 +1,7 @@
-
+rabbitmq:
+  queue:
+    name: queue
+  exchange:
+    name: ex
+  routing:
+    key: key
