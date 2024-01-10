@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
-public record TaskRequest(@NotBlank String header, String content, @Min(1) Long userId) {
+public record TaskRequest(@NotBlank String header, @NotBlank String content, @Min(1) Long userId) {
 }

@@ -5,3 +5,6 @@ rabbitmq:
     name: ex
   routing:
     key: key
+
+server:
+  port: 0

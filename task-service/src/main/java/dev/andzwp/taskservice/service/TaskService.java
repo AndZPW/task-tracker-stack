@@ -1,5 +1,6 @@
 package dev.andzwp.taskservice.service;
 
+import dev.andzwp.taskservice.dto.TaskDTO;
 import dev.andzwp.taskservice.dto.TaskRequest;
 import dev.andzwp.taskservice.dto.TaskResponse;
 import dev.andzwp.taskservice.exception.NoSuchTaskException;
@@ -17,5 +18,9 @@ public interface TaskService {
 
     void deleteAllTasksByUserId(Long userId);
 
-    Long createTask(TaskRequest taskRequest);
+    void createTask(TaskRequest taskRequest);
+
+    void updateTask(Long id, TaskDTO dto) throws NoSuchTaskException;
+
+    void patchTask(Long id, TaskDTO dto) throws NoSuchTaskException, IllegalAccessException;
 }

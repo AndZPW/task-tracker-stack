@@ -1,7 +1,8 @@
-package dev.andzwp.taskservice.exception.advice;
+package dev.andzwp.taskservice.exception;
 
 import dev.andzwp.taskservice.dto.ErrorResponse;
 import jakarta.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.LocalDateTime;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -25,6 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(ex.getMessage())
                 .time(LocalDateTime.now())
                 .build();
+        log.warn("The following exception has thrown MethodArgumentNotValidException with message {}", ex.getMessage());
         return new ResponseEntity<>(response, status);
     }
 
@@ -39,9 +42,39 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .path(request.getContextPath())
                 .build();
 
+        log.warn("The following exception has thrown Exception with message {}", ex.getMessage());
         return new ResponseEntity<>(response, status);
     }
 
 
+    @ExceptionHandler(IdOutOfBoundsException.class)
+    public ResponseEntity<ErrorResponse> handleIdOutOfBoundsException(IdOutOfBoundsException ex, WebRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+
+        var response = ErrorResponse.builder()
+                .statusCode(status)
+                .time(LocalDateTime.now())
+                .message(ex.getMessage())
+                .path(request.getContextPath())
+                .build();
+
+        log.warn("The following exception has thrown IdOutOfBoundsException with message {}", ex.getMessage());
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(NoSuchTaskException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchTaskException(NoSuchTaskException ex, WebRequest request) {
+        var status = HttpStatus.NOT_FOUND;
+
+        var response = ErrorResponse.builder()
+                .statusCode(status)
+                .time(LocalDateTime.now())
+                .message(ex.getMessage())
+                .path(request.getContextPath())
+                .build();
+
+        log.warn("The following exception has thrown NoSuchTaskException with message {}", ex.getMessage());
+        return new ResponseEntity<>(response, status);
+    }
 
 }

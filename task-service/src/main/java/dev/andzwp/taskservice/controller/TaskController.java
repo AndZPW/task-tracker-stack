@@ -1,10 +1,7 @@
 package dev.andzwp.taskservice.controller;
 
 import dev.andzwp.taskservice.aop.ValidRequestParam;
-import dev.andzwp.taskservice.dto.ErrorResponse;
-import dev.andzwp.taskservice.dto.Response;
-import dev.andzwp.taskservice.dto.TaskRequest;
-import dev.andzwp.taskservice.dto.TaskResponse;
+import dev.andzwp.taskservice.dto.*;
 import dev.andzwp.taskservice.exception.NoSuchTaskException;
 import dev.andzwp.taskservice.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -69,7 +67,7 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete the task",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Void.class))}),
+                            schema = @Schema())}),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponse.class))}),
@@ -89,13 +87,10 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete all tasks",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Void.class))}),
+                            schema = @Schema())}),
             @ApiResponse(responseCode = "400", description = "Invalid userId supplied",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponse.class))}),
-            @ApiResponse(responseCode = "404", description = "Task not found",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))})
 
     })
     @ValidRequestParam(min = 1)
@@ -122,5 +117,48 @@ public class TaskController {
     public Response createTask(@Validated TaskRequest taskRequest) {
         taskService.createTask(taskRequest);
         return new Response(HttpStatus.CREATED, "Task successfully created");
+    }
+
+    @Operation(summary = "Update task by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Update the task",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema())}),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Task not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))})
+
+    })
+    @PutMapping("/{id}")
+    @ValidRequestParam(min = 1)
+    public ResponseEntity<?> updateTask(@RequestBody @Validated TaskDTO dto, @PathVariable Long id) throws NoSuchTaskException {
+        taskService.updateTask(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Patch task by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Patch the task",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema())}),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Task not found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))})
+
+    })
+    @PatchMapping("/{id}")
+    @ValidRequestParam(min = 1)
+    public ResponseEntity<?> patchTask(@RequestBody TaskDTO dto, @PathVariable Long id) throws NoSuchTaskException, IllegalAccessException {
+        taskService.patchTask(id, dto);
+        return ResponseEntity.noContent().build();
     }
 }
