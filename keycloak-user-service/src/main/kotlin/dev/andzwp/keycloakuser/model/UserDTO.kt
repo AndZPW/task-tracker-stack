@@ -6,5 +6,4 @@ data class UserDTO(
     val firstName: String,
     val secondName: String,
     val email: String
-
 )
