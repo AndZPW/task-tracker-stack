@@ -20,11 +20,6 @@ public class GatewayConfiguration {
                                 )
                                 .uri("lb://task-service")
                 )
-//                .route("auth-service",
-//                        r -> r.path("/task-app/user/token")
-//                                .filters(f -> f.redirect(200,"http://localhost:7080/realms/master/protocol/openid-connect/token"))
-//                                .uri("http://localhost:7080/")
-//                )
                 .build();
     }
 }
