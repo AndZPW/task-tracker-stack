@@ -2,6 +2,7 @@ package dev.andzwp.keycloakuser.service
 
 import dev.andzwp.keycloakuser.model.UserDTO
 import org.keycloak.admin.client.resource.UsersResource
+import org.keycloak.representations.account.UserRepresentation
 import org.keycloak.representations.idm.CredentialRepresentation
 
 
