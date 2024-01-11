@@ -1,9 +1,17 @@
 server:
   port: 8080
 
+
 #spring:
 #  security:
 #    oauth2:
 #      resourceserver:
 #        jwt:
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:7080/realms/api-gateway-security
+
 #          jwk-set-uri: http://localhost:7080/realms/master/protocol/openid-connect/certs

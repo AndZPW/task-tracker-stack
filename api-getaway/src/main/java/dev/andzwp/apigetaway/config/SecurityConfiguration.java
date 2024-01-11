@@ -8,19 +8,22 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 
-//@Configuration
-//@EnableWebFluxSecurity
-//public class SecurityConfiguration {
-//
-//    @Bean
-//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity){
-//        serverHttpSecurity.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
-//                .pathMatchers("/task-app/tasks/**").authenticated())
-//                .oauth2ResourceServer(
-//                        oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec
-//                                .jwt(Customizer.withDefaults())
-//                );
-//        serverHttpSecurity.csrf(ServerHttpSecurity.CsrfSpec::disable);
-//        return serverHttpSecurity.build();
-//    }
-//}
+@Configuration
+@EnableWebFluxSecurity
+public class SecurityConfiguration {
+
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity) {
+        return serverHttpSecurity
+                .authorizeExchange(
+                        authorizeExchangeSpec -> authorizeExchangeSpec.pathMatchers("/task-app/tasks/**").authenticated()
+                )
+                .oauth2ResourceServer(
+                        x -> x.jwt(Customizer.withDefaults())
+                )
+                .csrf(
+                        ServerHttpSecurity.CsrfSpec::disable
+                )
+                .build();
+    }
+}
