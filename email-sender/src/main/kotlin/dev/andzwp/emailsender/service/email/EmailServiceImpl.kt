@@ -9,11 +9,11 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
 @Service
-class EmailServiceImpl(private val emailSender: JavaMailSender) : EmailService {
+class EmailServiceImpl() : EmailService {
 
     private val logger: Log = LogFactory.getLog(this.javaClass)
 
     override fun send(email: Email) {
-
+        logger.info("Email successfully send")
     }
 }

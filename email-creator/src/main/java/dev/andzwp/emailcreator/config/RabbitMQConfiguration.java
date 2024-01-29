@@ -8,32 +8,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfiguration {
 
-    @Value("${rabbit.queue.name}")
+    @Value("${rabbit.email.queue}")
     private String queueName;
 
-    @Value("${rabbit.producer.topic}")
+    @Value("${rabbit.email.exchange}")
     private String topicExchangeProducerName;
 
-    @Value("${rabbit.producer.routing-key}")
-    private String producerRoutingKey;
 
     @Bean
-    public Queue queue(){
-        return new Queue(queueName,true);
+    public Queue queue() {
+        return new Queue(queueName, true);
     }
 
     @Bean
-    public Exchange exchange(){
-        return new TopicExchange(topicExchangeProducerName);
+    public FanoutExchange exchange() {
+        return new FanoutExchange(topicExchangeProducerName);
     }
 
     @Bean
-    public Binding binding(Queue queue, Exchange exchange) {
-        return BindingBuilder
-                .bind(queue)
-                .to(exchange)
-                .with(producerRoutingKey)
-                .noargs();
+    public Binding binding(Queue queue, FanoutExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange);
     }
 }
 

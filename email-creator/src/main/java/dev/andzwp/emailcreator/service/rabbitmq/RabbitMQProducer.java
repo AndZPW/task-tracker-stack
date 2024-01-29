@@ -15,15 +15,13 @@ public class RabbitMQProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbit.producer.topic}")
-    private String topicExchangeName;
+    @Value("${rabbit.email.exchange}")
+    private String exchangeName;
 
-    @Value("${rabbit.producer.routing-key}")
-    private String routingKey;
 
     public void sendMessage(Email email) {
         try {
-            rabbitTemplate.convertAndSend(topicExchangeName, routingKey, email);
+            rabbitTemplate.convertAndSend(exchangeName,"", email);
             log.info("Email sent to the email sender");
         } catch (RuntimeException e) {
             log.error("The exception with following message {}", e.getMessage());

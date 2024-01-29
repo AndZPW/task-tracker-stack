@@ -1,1 +1,11 @@
+rabbit:
+  email:
+    exchange: email-exchange
+    queue: email-queue
+
+  user:
+    queue: user-queue
+
+  task:
+    queue: task-queue
 

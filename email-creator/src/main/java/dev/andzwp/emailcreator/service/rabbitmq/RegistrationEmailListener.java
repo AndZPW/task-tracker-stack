@@ -15,7 +15,7 @@ public class RegistrationEmailListener implements RabbitMQListener<User> {
     private final EmailCreator<User> emailCreator;
 
     @Override
-    @RabbitListener(queues = {"${rabbit.queue.name}"})
+    @RabbitListener(queues = {"${rabbit.user.queue}"})
     public void sendMessageToEmailSender(User user) {
         var email = emailCreator.createEmail(user);
         rabbitMQProducer.sendMessage(email);

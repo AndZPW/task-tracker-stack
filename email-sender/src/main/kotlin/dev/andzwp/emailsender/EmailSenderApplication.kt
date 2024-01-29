@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration
 
 @SpringBootApplication
 @EnableDiscoveryClient
-
 class EmailSenderApplication
 
 fun main(args: Array<String>) {

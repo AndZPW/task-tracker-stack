@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class RabbitMQConsumer( private val emailService: EmailService) {
 
-    @RabbitListener(queues = ["\${rabbitmq.queue.name}"])
+    @RabbitListener(queues = ["\${rabbitmq.email.queue}"])
     fun consumeEmail(email: Email) {
         emailService.send(email)
     }

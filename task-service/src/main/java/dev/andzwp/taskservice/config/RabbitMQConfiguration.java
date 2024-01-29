@@ -12,7 +12,7 @@ public class RabbitMQConfiguration {
     private String queueName;
 
     @Value("${rabbitmq.exchange.name}")
-    private String topicExchangeName;
+    private String exchangeName;
 
     @Value("${rabbitmq.routing.key}")
     private String routingKey;
@@ -24,7 +24,7 @@ public class RabbitMQConfiguration {
 
     @Bean
     public Exchange exchange() {
-        return new TopicExchange(topicExchangeName);
+        return new DirectExchange(exchangeName);
     }
 
 

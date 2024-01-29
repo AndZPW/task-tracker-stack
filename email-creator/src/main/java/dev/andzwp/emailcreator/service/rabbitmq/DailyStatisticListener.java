@@ -16,7 +16,7 @@ public class DailyStatisticListener implements RabbitMQListener<Task> {
     private final EmailCreator<Task> emailCreator;
 
     @Override
-    @RabbitListener(queues = {"${rabbit.queue.name}"})
+    @RabbitListener(queues = {"${rabbit.task.queue}"})
     public void sendMessageToEmailSender(Task entity) {
         var email = emailCreator.createEmail(entity);
         rabbitMQProducer.sendMessage(email);
