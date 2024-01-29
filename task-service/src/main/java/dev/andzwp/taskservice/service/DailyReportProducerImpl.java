@@ -3,6 +3,7 @@ package dev.andzwp.taskservice.service;
 import dev.andzwp.taskservice.dto.DailyReportDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,10 @@ public class DailyReportProducerImpl implements DailyReportProducer {
 
     @Override
     public void sendDailyReport(DailyReportDTO dto) {
-        rabbitTemplate.conv
-
-
-
-
-
-
-
-
-
-
-    ertAndSend(exchangeName,taskRoutingKey,dto);
+        try {
+            rabbitTemplate.convertAndSend(exchangeName, taskRoutingKey, dto);
+        } catch (Exception e) {
+            log.error("The exception with following message {}", e.getMessage());
+        }
     }
 }
