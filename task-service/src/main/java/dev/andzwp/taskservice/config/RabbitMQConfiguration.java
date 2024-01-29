@@ -8,18 +8,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfiguration {
 
-    @Value("${rabbitmq.queue.name}")
-    private String queueName;
-
     @Value("${rabbitmq.exchange.name}")
     private String exchangeName;
 
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
+    @Value("${rabbitmq.task.queue}")
+    private String taskQueueName;
+
+    @Value("${rabbitmq.task.key}")
+    private String taskRoutingKey;
+
 
     @Bean
     public Queue queue() {
-        return new Queue(queueName, true);
+        return new Queue(taskQueueName, true);
     }
 
     @Bean
@@ -33,7 +34,7 @@ public class RabbitMQConfiguration {
         return BindingBuilder
                 .bind(queue)
                 .to(exchange)
-                .with(routingKey)
+                .with(taskRoutingKey)
                 .noargs();
     }
 
